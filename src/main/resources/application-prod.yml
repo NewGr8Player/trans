@@ -1,0 +1,9 @@
+spring:
+  groovy:
+    template:
+      check-template-location: false
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9300
+logging:
+  config: classpath:logback.groovy
