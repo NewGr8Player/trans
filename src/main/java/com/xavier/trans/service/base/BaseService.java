@@ -1,14 +1,24 @@
 package com.xavier.trans.service.base;
 
+import com.xavier.trans.model.PetitionHighLevelReduce;
 import com.xavier.trans.model.base.BaseEntity;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,6 +30,26 @@ public abstract class BaseService<D extends ElasticsearchCrudRepository, T exten
 	 */
 	@Resource
 	protected D dao;
+
+	/**
+	 * ElasticsearchTemplate，相当于JdbcTemplate
+	 */
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
+
+	/**
+	 * 传入Bean的类类型
+	 */
+	private Class<T> entityClass;
+
+	/**
+	 * 构造函数初始化的时候为传入Bean的类类型赋值
+	 */
+	public BaseService() {
+		Type genType = getClass().getGenericSuperclass();
+		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+		entityClass = (Class) params[0];
+	}
 
 	/**
 	 * 获取单条数据
@@ -59,5 +89,19 @@ public abstract class BaseService<D extends ElasticsearchCrudRepository, T exten
 	@Transactional
 	public void delete(T entity) {
 		dao.delete(entity);
+	}
+
+	/**
+	 * 动态条件查询
+	 *
+	 * @param query           查询条件
+	 * @param filter          过滤条件
+	 * @param sorts           排序
+	 * @param highlighBuilder 高亮
+	 * @param highlightFields 高亮字段
+	 * @return
+	 */
+	public List<T> findList(QueryBuilder query, QueryBuilder filter, List<SortBuilder> sorts, HighlightBuilder highlighBuilder, HighlightBuilder.Field[] highlightFields) {
+		return elasticsearchTemplate.queryForList(new NativeSearchQuery(query, filter, sorts, highlighBuilder, highlightFields), entityClass);
 	}
 }
