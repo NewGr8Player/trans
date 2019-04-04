@@ -8,6 +8,9 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -45,11 +48,8 @@ public class PetitionHighLevelReduceServiceTest extends TransApplicationTests {
 
 	@Test
 	public void serviceCondSearchTest() {
-		QueryBuilder query = null;
-		QueryBuilder filter = null;
-		List<SortBuilder> sorts = null;
-		HighlightBuilder highlighBuilder = null;
-		HighlightBuilder.Field[] highlightFields = null;
-		petitionHighLevelReduceService.findList(query, filter, sorts, highlighBuilder, highlightFields);
+		// TODO https://blog.csdn.net/tianyaleixiaowu/article/details/77965257 参考这个网址
+		SearchQuery query = new NativeSearchQueryBuilder().build();
+		petitionHighLevelReduceService.findList(query);
 	}
 }

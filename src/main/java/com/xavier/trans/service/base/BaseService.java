@@ -1,6 +1,5 @@
 package com.xavier.trans.service.base;
 
-import com.xavier.trans.model.PetitionHighLevelReduce;
 import com.xavier.trans.model.base.BaseEntity;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
@@ -94,14 +93,10 @@ public abstract class BaseService<D extends ElasticsearchCrudRepository, T exten
 	/**
 	 * 动态条件查询
 	 *
-	 * @param query           查询条件
-	 * @param filter          过滤条件
-	 * @param sorts           排序
-	 * @param highlighBuilder 高亮
-	 * @param highlightFields 高亮字段
+	 * @param searchQuery 查询条件
 	 * @return
 	 */
-	public List<T> findList(QueryBuilder query, QueryBuilder filter, List<SortBuilder> sorts, HighlightBuilder highlighBuilder, HighlightBuilder.Field[] highlightFields) {
-		return elasticsearchTemplate.queryForList(new NativeSearchQuery(query, filter, sorts, highlighBuilder, highlightFields), entityClass);
+	public List<T> findList(SearchQuery searchQuery) {
+		return elasticsearchTemplate.queryForList(searchQuery, entityClass);
 	}
 }
