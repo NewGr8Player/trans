@@ -196,4 +196,63 @@ public class PetitionHighLevelReduce extends BaseEntity {
 
 	@Field(type = FieldType.Integer)
 	private Integer delFlag;/* 删除标示 */
+
+	@Field
+	private String petitionCaseId; /* 信访件id */
+
+	@Field
+	private String transactOfficeCode; /* 办理机构代码（bljgdm） */
+
+	@Field
+	private String transactOfficeCategory; /* 办理机构类别（bljglb） */
+
+	@Field
+	private String transactMen; /* 经办人（jbr） */
+
+	@Field
+	private String transactMenId; /* 办理人id */
+
+	@Field
+	private String toOfficeId; /* 去向机构id */
+
+	@Field
+	private String toOfficeName; /* 去向机构（qxjg） */
+
+	@Field
+	private String toOfficeCode; /* 去向机构代码（qxjgdm） */
+
+	@Field
+	private String littleToName; /* 小去向名称（xqxmc） */
+
+	@Field
+	private String replyNotifyContent; /* 回复告知内容（hfgznr） */
+
+	@Field
+	private String transactOpinion; /* 办理意见（blyj） */
+
+	@Field(type = FieldType.Integer)
+	private String publishFlag; /* 发布状态 */
+
+	@Field
+	private String copyOfficeIds; /* 抄送机构ids(多个) */
+
+	@Field
+	private String copyOfficeName; /* 抄送机构(多个) */
+
+	@Field
+	private String createBy; /* 创建人 */
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@Field(type = FieldType.Date, format = DateFormat.year_month_day)
+	private String createDate; /* 创建时间 */
+
+	@Field
+	private String updateBy; /* 更新者 */
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	@Field(type = FieldType.Date, format = DateFormat.year_month_day)
+	private String updateDate; /* 更新时间 */
+
+	@Field(type = FieldType.Integer)
+	private String sort; /* 排序 */
 }
